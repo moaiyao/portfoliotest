@@ -87,8 +87,8 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Observe all project cards and skill categories
-document.querySelectorAll('.project-card, .skill-category, .stat').forEach(el => {
+// Observe all project cards, skill categories, and friend cards
+document.querySelectorAll('.project-card, .skill-category, .stat, .friend-card').forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(30px)';
     el.style.transition = 'all 0.6s ease';
