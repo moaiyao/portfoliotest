@@ -1,0 +1,7 @@
+.git
+.gitignore
+wrangler.toml
+.wranglerignore
+README.md
+node_modules
+.env
