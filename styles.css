@@ -239,89 +239,327 @@ body {
     font-size: 0.95rem;
 }
 
-/* Projects Section */
+/* Projects Section - Galaxy Theme */
 .projects {
     padding: 6rem 2rem;
-    background: var(--bg-light);
-}
-
-.projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-}
-
-.project-card {
-    background: var(--bg-white);
-    border-radius: 16px;
+    background: radial-gradient(ellipse at center, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    min-height: 100vh;
+    position: relative;
     overflow: hidden;
-    box-shadow: var(--shadow);
+}
+
+.projects::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        radial-gradient(2px 2px at 20% 30%, white, transparent),
+        radial-gradient(2px 2px at 60% 70%, white, transparent),
+        radial-gradient(1px 1px at 50% 50%, white, transparent),
+        radial-gradient(1px 1px at 80% 10%, white, transparent),
+        radial-gradient(2px 2px at 90% 60%, white, transparent),
+        radial-gradient(1px 1px at 33% 80%, white, transparent);
+    background-size: 200% 200%;
+    animation: stars 100s linear infinite;
+    opacity: 0.5;
+}
+
+.projects .section-title {
+    color: white;
+    position: relative;
+    z-index: 10;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+.galaxy-container {
+    position: relative;
+    width: 100%;
+    height: 800px;
+    margin: 4rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Central Sun */
+.sun {
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #fff95b, #ffd700, #ff8c00);
+    box-shadow:
+        0 0 60px #ffd700,
+        0 0 100px #ff8c00,
+        0 0 140px #ff6347,
+        inset 0 0 40px rgba(255, 200, 0, 0.8);
+    z-index: 5;
+    animation: sunPulse 4s ease-in-out infinite;
+}
+
+.sun-core {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), transparent 70%);
+    animation: sunRotate 20s linear infinite;
+}
+
+/* Planet Orbits */
+.planet-orbit {
+    position: absolute;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+.orbit-1 {
+    width: 300px;
+    height: 300px;
+    animation: orbit 20s linear infinite;
+}
+
+.orbit-2 {
+    width: 450px;
+    height: 450px;
+    animation: orbit 30s linear infinite;
+}
+
+.orbit-3 {
+    width: 600px;
+    height: 600px;
+    animation: orbit 40s linear infinite;
+}
+
+.orbit-4 {
+    width: 750px;
+    height: 750px;
+    animation: orbit 50s linear infinite;
+}
+
+/* Planets */
+.planet {
+    position: absolute;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow:
+        0 0 20px rgba(255, 255, 255, 0.3),
+        inset -10px -10px 20px rgba(0, 0, 0, 0.5);
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+.planet:hover {
+    transform: scale(1.15);
+    filter: brightness(1.3);
+}
+
+.planet.active {
+    transform: scale(2) !important;
+    z-index: 100 !important;
+    filter: brightness(1.5);
+}
+
+.planet-surface {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    animation: planetRotate 10s linear infinite;
+}
+
+/* Planet 1 - E-Commerce (Blue/Earth-like) */
+.planet-1 {
+    width: 80px;
+    height: 80px;
+    top: -40px;
+    left: 50%;
+    margin-left: -40px;
+}
+
+.planet-1 .planet-surface {
+    background:
+        radial-gradient(circle at 30% 30%, #4a90e2, #2c5f99, #1a3d6b);
+    background-size: 200% 200%;
+}
+
+/* Planet 2 - Healthcare (Red/Mars-like) */
+.planet-2 {
+    width: 100px;
+    height: 100px;
+    top: -50px;
+    left: 50%;
+    margin-left: -50px;
+}
+
+.planet-2 .planet-surface {
+    background:
+        radial-gradient(circle at 30% 30%, #e74c3c, #c0392b, #922b21);
+    background-size: 200% 200%;
+}
+
+/* Planet 3 - Financial (Orange/Jupiter-like) */
+.planet-3 {
+    width: 120px;
+    height: 120px;
+    top: -60px;
+    left: 50%;
+    margin-left: -60px;
+}
+
+.planet-3 .planet-surface {
+    background:
+        linear-gradient(to bottom,
+            #f39c12 0%,
+            #e67e22 25%,
+            #d35400 50%,
+            #e67e22 75%,
+            #f39c12 100%);
+    background-size: 100% 200%;
+    animation: planetRotate 8s linear infinite, jupiterBands 15s linear infinite;
+}
+
+/* Planet 4 - Learning (Purple/Neptune-like) */
+.planet-4 {
+    width: 95px;
+    height: 95px;
+    top: -47.5px;
+    left: 50%;
+    margin-left: -47.5px;
+}
+
+.planet-4 .planet-surface {
+    background:
+        radial-gradient(circle at 30% 30%, #9b59b6, #8e44ad, #6c3483);
+    background-size: 200% 200%;
+}
+
+/* Planet Info */
+.planet-info {
+    position: absolute;
+    bottom: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    padding: 0.75rem 1.25rem;
+    border-radius: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 10;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.planet:hover .planet-info {
+    opacity: 1;
+}
+
+.planet-info h3 {
+    font-size: 1rem;
+    color: white;
+    margin-bottom: 0.25rem;
+}
+
+.planet-info .project-type {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+}
+
+/* Project Modal */
+.project-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+}
+
+.project-modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border-radius: 20px;
+    padding: 3rem;
+    max-width: 600px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
     transition: all 0.3s ease;
 }
 
-.project-card:hover {
-    transform: translateY(-10px);
-    box-shadow: var(--shadow-lg);
+.modal-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(90deg);
 }
 
-.project-image {
-    width: 100%;
-    height: 250px;
-    overflow: hidden;
-    background: var(--bg-light);
-}
-
-.placeholder-project {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #a78bfa, #ec4899);
-    transition: transform 0.3s ease;
-}
-
-.project-card:hover .placeholder-project {
-    transform: scale(1.1);
-}
-
-.project-content {
-    padding: 2rem;
-}
-
-.project-content h3 {
-    font-size: 1.5rem;
+.modal-body h3 {
+    font-size: 2rem;
+    color: white;
     margin-bottom: 0.5rem;
-    color: var(--text-dark);
 }
 
-.project-type {
+.modal-body .project-type {
     color: var(--primary-color);
-    font-size: 0.9rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-}
-
-.project-description {
-    color: var(--text-light);
     margin-bottom: 1.5rem;
-    line-height: 1.6;
 }
 
-.project-tags {
+.modal-body .project-description {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+}
+
+.modal-body .project-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
 }
 
-.tag {
-    padding: 0.4rem 0.8rem;
-    background: var(--bg-light);
-    color: var(--text-dark);
+.modal-body .tag {
+    padding: 0.5rem 1rem;
+    background: rgba(99, 102, 241, 0.2);
+    color: white;
     border-radius: 20px;
     font-size: 0.85rem;
-    font-weight: 500;
+    border: 1px solid rgba(99, 102, 241, 0.4);
 }
 
-.project-link {
+.modal-body .project-link {
     color: var(--primary-color);
     text-decoration: none;
     font-weight: 600;
@@ -329,8 +567,83 @@ body {
     display: inline-block;
 }
 
-.project-link:hover {
+.modal-body .project-link:hover {
     transform: translateX(5px);
+    color: var(--secondary-color);
+}
+
+/* Animations */
+@keyframes orbit {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes planetRotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes sunRotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes sunPulse {
+    0%, 100% {
+        box-shadow:
+            0 0 60px #ffd700,
+            0 0 100px #ff8c00,
+            0 0 140px #ff6347,
+            inset 0 0 40px rgba(255, 200, 0, 0.8);
+    }
+    50% {
+        box-shadow:
+            0 0 80px #ffd700,
+            0 0 120px #ff8c00,
+            0 0 160px #ff6347,
+            inset 0 0 50px rgba(255, 200, 0, 0.9);
+    }
+}
+
+@keyframes jupiterBands {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: 0 200%;
+    }
+}
+
+@keyframes stars {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: 100% 100%;
+    }
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }
 
 /* Skills Section */
@@ -652,12 +965,66 @@ body {
         grid-template-columns: 1fr;
     }
 
-    .projects-grid {
+    .friends-grid {
         grid-template-columns: 1fr;
     }
 
-    .friends-grid {
-        grid-template-columns: 1fr;
+    /* Galaxy responsive */
+    .galaxy-container {
+        height: 600px;
+    }
+
+    .sun {
+        width: 120px;
+        height: 120px;
+    }
+
+    .orbit-1 {
+        width: 220px;
+        height: 220px;
+    }
+
+    .orbit-2 {
+        width: 320px;
+        height: 320px;
+    }
+
+    .orbit-3 {
+        width: 420px;
+        height: 420px;
+    }
+
+    .orbit-4 {
+        width: 520px;
+        height: 520px;
+    }
+
+    .planet-1 {
+        width: 60px;
+        height: 60px;
+        top: -30px;
+        margin-left: -30px;
+    }
+
+    .planet-2 {
+        width: 70px;
+        height: 70px;
+        top: -35px;
+        margin-left: -35px;
+    }
+
+    .planet-3 {
+        width: 80px;
+        height: 80px;
+        top: -40px;
+        margin-left: -40px;
+    }
+
+    .planet-4 {
+        width: 65px;
+        height: 65px;
+        top: -32.5px;
+        margin-left: -32.5px;
     }
 }
 
@@ -698,6 +1065,76 @@ body {
     .about-stats {
         flex-direction: column;
     }
+
+    /* Galaxy responsive */
+    .galaxy-container {
+        height: 500px;
+    }
+
+    .sun {
+        width: 80px;
+        height: 80px;
+    }
+
+    .orbit-1 {
+        width: 180px;
+        height: 180px;
+    }
+
+    .orbit-2 {
+        width: 260px;
+        height: 260px;
+    }
+
+    .orbit-3 {
+        width: 340px;
+        height: 340px;
+    }
+
+    .orbit-4 {
+        width: 420px;
+        height: 420px;
+    }
+
+    .planet-1 {
+        width: 50px;
+        height: 50px;
+        top: -25px;
+        margin-left: -25px;
+    }
+
+    .planet-2 {
+        width: 60px;
+        height: 60px;
+        top: -30px;
+        margin-left: -30px;
+    }
+
+    .planet-3 {
+        width: 70px;
+        height: 70px;
+        top: -35px;
+        margin-left: -35px;
+    }
+
+    .planet-4 {
+        width: 55px;
+        height: 55px;
+        top: -27.5px;
+        margin-left: -27.5px;
+    }
+
+    .planet-info {
+        font-size: 0.85rem;
+    }
+
+    .planet-info h3 {
+        font-size: 0.9rem;
+    }
+
+    .planet-info .project-type {
+        font-size: 0.7rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -722,5 +1159,71 @@ body {
 
     .friend-social {
         justify-content: center;
+    }
+
+    /* Galaxy responsive */
+    .galaxy-container {
+        height: 400px;
+    }
+
+    .sun {
+        width: 60px;
+        height: 60px;
+    }
+
+    .orbit-1 {
+        width: 140px;
+        height: 140px;
+    }
+
+    .orbit-2 {
+        width: 200px;
+        height: 200px;
+    }
+
+    .orbit-3 {
+        width: 260px;
+        height: 260px;
+    }
+
+    .orbit-4 {
+        width: 320px;
+        height: 320px;
+    }
+
+    .planet-1 {
+        width: 40px;
+        height: 40px;
+        top: -20px;
+        margin-left: -20px;
+    }
+
+    .planet-2 {
+        width: 45px;
+        height: 45px;
+        top: -22.5px;
+        margin-left: -22.5px;
+    }
+
+    .planet-3 {
+        width: 50px;
+        height: 50px;
+        top: -25px;
+        margin-left: -25px;
+    }
+
+    .planet-4 {
+        width: 42px;
+        height: 42px;
+        top: -21px;
+        margin-left: -21px;
+    }
+
+    .modal-content {
+        padding: 2rem;
+    }
+
+    .modal-body h3 {
+        font-size: 1.5rem;
     }
 }
