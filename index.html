@@ -10,8 +10,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Skip to main content link for accessibility -->
+    <a href="#main-content" class="skip-to-content">Skip to main content</a>
+
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-progress" id="scroll-progress" role="progressbar" aria-label="Page scroll progress"></div>
+
     <!-- Navigation -->
-    <nav class="navbar">
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
         <div class="nav-container">
             <a href="#" class="logo">UX Portfolio</a>
             <ul class="nav-menu">
@@ -21,30 +27,51 @@
                 <li><a href="#friends" class="nav-link">Friends</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                    <svg class="sun-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="2"/>
+                        <line x1="10" y1="2" x2="10" y2="4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="10" y1="16" x2="10" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="18" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="4" y1="10" x2="2" y2="10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="15.5" y1="4.5" x2="14.1" y2="5.9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="5.9" y1="14.1" x2="4.5" y2="15.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="15.5" y1="15.5" x2="14.1" y2="14.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="5.9" y1="5.9" x2="4.5" y2="4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <svg class="moon-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M17 10.5C16.5 14.6 12.9 18 8.5 18C4.1 18 0.5 14.4 0.5 10C0.5 5.6 3.9 2 8 1.5C7.5 2.3 7.2 3.3 7.2 4.4C7.2 7.5 9.7 10 12.8 10C13.9 10 14.9 9.7 15.7 9.2C16.2 9.5 16.6 10 17 10.5Z" fill="currentColor"/>
+                    </svg>
+                </button>
+                <div class="hamburger" aria-label="Toggle menu" role="button" tabindex="0">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
             </div>
         </div>
     </nav>
 
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" id="main-content">
         <div class="hero-content">
             <h1 class="hero-title">Crafting Meaningful User Experiences</h1>
             <p class="hero-subtitle">UX Designer focused on creating intuitive, user-centered digital solutions that solve real problems</p>
-            <a href="#projects" class="cta-button">View My Work</a>
+            <a href="#projects" class="cta-button" aria-label="View my work and projects">View My Work</a>
         </div>
-        <div class="hero-image">
-            <div class="placeholder-image"></div>
+        <div class="hero-image" role="presentation">
+            <div class="placeholder-image" aria-hidden="true"></div>
         </div>
     </section>
 
     <!-- About Section -->
-    <section id="about" class="about">
+    <section id="about" class="about" aria-labelledby="about-title">
         <div class="container">
-            <h2 class="section-title">About Me</h2>
+            <h2 id="about-title" class="section-title">About Me</h2>
             <div class="about-content">
                 <div class="about-text">
                     <p>I'm a passionate UX designer with a keen eye for detail and a user-first approach to problem-solving. With a background in design thinking and human-computer interaction, I transform complex challenges into elegant, intuitive experiences.</p>
@@ -69,12 +96,12 @@
     </section>
 
     <!-- Projects Section - Galaxy Theme -->
-    <section id="projects" class="projects">
+    <section id="projects" class="projects" aria-labelledby="projects-title">
         <div class="container">
-            <h2 class="section-title">Featured Projects</h2>
-            <div class="galaxy-container">
+            <h2 id="projects-title" class="section-title">Featured Projects</h2>
+            <div class="galaxy-container" role="region" aria-label="Interactive project showcase">
                 <!-- Central Sun -->
-                <div class="sun">
+                <div class="sun" role="presentation" aria-hidden="true">
                     <div class="sun-core"></div>
                 </div>
 
@@ -140,9 +167,9 @@
     </section>
 
     <!-- Skills Section -->
-    <section id="skills" class="skills">
+    <section id="skills" class="skills" aria-labelledby="skills-title">
         <div class="container">
-            <h2 class="section-title">Skills & Expertise</h2>
+            <h2 id="skills-title" class="section-title">Skills & Expertise</h2>
             <div class="skills-grid">
                 <div class="skill-category">
                     <h3>Research & Strategy</h3>
@@ -189,9 +216,9 @@
     </section>
 
     <!-- Friends Section -->
-    <section id="friends" class="friends">
+    <section id="friends" class="friends" aria-labelledby="friends-title">
         <div class="container">
-            <h2 class="section-title">Friends & Collaborators</h2>
+            <h2 id="friends-title" class="section-title">Friends & Collaborators</h2>
             <p class="friends-subtitle">Amazing designers and creatives I've had the pleasure of working with</p>
             <div class="friends-grid">
                 <!-- Friend 1 -->
@@ -204,8 +231,8 @@
                         <p class="friend-role">Product Designer</p>
                         <p class="friend-description">Creative thinker specializing in design systems and brand identity. We collaborated on several e-commerce projects.</p>
                         <div class="friend-social">
-                            <a href="#" class="friend-link">Portfolio</a>
-                            <a href="#" class="friend-link">LinkedIn</a>
+                            <a href="#" class="friend-link" aria-label="Visit Sarah Chen's portfolio">Portfolio</a>
+                            <a href="#" class="friend-link" aria-label="Connect with Sarah Chen on LinkedIn">LinkedIn</a>
                         </div>
                     </div>
                 </div>
@@ -294,22 +321,52 @@
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="contact">
+    <section id="contact" class="contact" aria-labelledby="contact-title">
         <div class="container">
-            <h2 class="section-title">Let's Work Together</h2>
+            <h2 id="contact-title" class="section-title">Let's Work Together</h2>
             <p class="contact-subtitle">Have a project in mind? I'd love to hear about it.</p>
             <div class="contact-content">
-                <form class="contact-form">
+                <form class="contact-form" id="contact-form" novalidate>
                     <div class="form-group">
-                        <input type="text" placeholder="Your Name" required>
+                        <label for="name" class="form-label">Name</label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            placeholder="Your Name"
+                            required
+                            aria-required="true"
+                            aria-describedby="name-error">
+                        <span class="error-message" id="name-error"></span>
                     </div>
                     <div class="form-group">
-                        <input type="email" placeholder="Your Email" required>
+                        <label for="email" class="form-label">Email</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="your@email.com"
+                            required
+                            aria-required="true"
+                            aria-describedby="email-error">
+                        <span class="error-message" id="email-error"></span>
                     </div>
                     <div class="form-group">
-                        <textarea placeholder="Your Message" rows="5" required></textarea>
+                        <label for="message" class="form-label">Message</label>
+                        <textarea
+                            id="message"
+                            name="message"
+                            placeholder="Your Message"
+                            rows="5"
+                            required
+                            aria-required="true"
+                            aria-describedby="message-error"></textarea>
+                        <span class="error-message" id="message-error"></span>
                     </div>
-                    <button type="submit" class="submit-button">Send Message</button>
+                    <button type="submit" class="submit-button">
+                        <span class="button-text">Send Message</span>
+                        <span class="button-loader"></span>
+                    </button>
                 </form>
                 <div class="contact-info">
                     <div class="contact-item">
@@ -323,9 +380,9 @@
                     <div class="contact-item">
                         <h4>Social</h4>
                         <div class="social-links">
-                            <a href="#" class="social-link">LinkedIn</a>
-                            <a href="#" class="social-link">Dribbble</a>
-                            <a href="#" class="social-link">Behance</a>
+                            <a href="#" class="social-link" aria-label="Visit my LinkedIn profile">LinkedIn</a>
+                            <a href="#" class="social-link" aria-label="Visit my Dribbble portfolio">Dribbble</a>
+                            <a href="#" class="social-link" aria-label="Visit my Behance portfolio">Behance</a>
                         </div>
                     </div>
                 </div>

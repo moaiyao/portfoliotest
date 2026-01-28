@@ -1,11 +1,77 @@
-// Mobile Menu Toggle
-const hamburger = document.querySelector('.hamburger');
-const navMenu = document.querySelector('.nav-menu');
+// ==================== THEME TOGGLE ====================
+const themeToggle = document.getElementById('theme-toggle');
+const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+// Load saved theme or use system preference
+const currentTheme = localStorage.getItem('theme') ||
+    (prefersDarkScheme.matches ? 'dark' : 'light');
+
+if (currentTheme === 'dark') {
+    document.body.classList.add('dark-mode');
+}
+
+themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    const theme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+    localStorage.setItem('theme', theme);
+
+    showToast('Theme Updated', `Switched to ${theme} mode`, 'success');
+});
+
+// ==================== SCROLL PROGRESS INDICATOR ====================
+const scrollProgress = document.getElementById('scroll-progress');
+
+function updateScrollProgress() {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrollPercent = (scrollTop / scrollHeight) * 100;
+    scrollProgress.style.width = scrollPercent + '%';
+}
+
+window.addEventListener('scroll', updateScrollProgress);
+
+// ==================== ACTIVE NAVIGATION INDICATOR ====================
+const sections = document.querySelectorAll('section[id]');
 const navLinks = document.querySelectorAll('.nav-link');
 
-hamburger.addEventListener('click', () => {
+function setActiveNav() {
+    const scrollY = window.pageYOffset;
+
+    sections.forEach(section => {
+        const sectionHeight = section.offsetHeight;
+        const sectionTop = section.offsetTop - 100;
+        const sectionId = section.getAttribute('id');
+
+        if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${sectionId}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+    });
+}
+
+window.addEventListener('scroll', setActiveNav);
+
+// ==================== MOBILE MENU TOGGLE ====================
+const hamburger = document.querySelector('.hamburger');
+const navMenu = document.querySelector('.nav-menu');
+
+function toggleMenu() {
     navMenu.classList.toggle('active');
     hamburger.classList.toggle('active');
+}
+
+hamburger.addEventListener('click', toggleMenu);
+
+// Keyboard support for hamburger
+hamburger.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleMenu();
+    }
 });
 
 // Close mobile menu when a link is clicked
@@ -56,20 +122,150 @@ window.addEventListener('scroll', () => {
     lastScroll = currentScroll;
 });
 
-// Form submission handler
-const contactForm = document.querySelector('.contact-form');
+// ==================== TOAST NOTIFICATION SYSTEM ====================
+const toastContainer = document.getElementById('toast-container');
 
-contactForm.addEventListener('submit', (e) => {
+function showToast(title, message, type = 'success') {
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+
+    const icon = type === 'success' ? '✓' :
+        type === 'error' ? '✕' :
+            type === 'warning' ? '⚠' : 'ℹ';
+
+    toast.innerHTML = `
+        <div class="toast-icon">${icon}</div>
+        <div class="toast-content">
+            <div class="toast-title">${title}</div>
+            <div class="toast-message">${message}</div>
+        </div>
+        <button class="toast-close" aria-label="Close notification">&times;</button>
+    `;
+
+    toastContainer.appendChild(toast);
+
+    // Close button functionality
+    const closeBtn = toast.querySelector('.toast-close');
+    closeBtn.addEventListener('click', () => {
+        toast.style.animation = 'fadeOut 0.3s ease forwards';
+        setTimeout(() => toast.remove(), 300);
+    });
+
+    // Auto remove after 3 seconds
+    setTimeout(() => {
+        if (toast.parentElement) {
+            toast.style.animation = 'fadeOut 0.3s ease forwards';
+            setTimeout(() => toast.remove(), 300);
+        }
+    }, 3000);
+}
+
+// ==================== FORM VALIDATION ====================
+const contactForm = document.getElementById('contact-form');
+const nameInput = document.getElementById('name');
+const emailInput = document.getElementById('email');
+const messageInput = document.getElementById('message');
+
+const validators = {
+    name: (value) => {
+        if (!value.trim()) return 'Name is required';
+        if (value.trim().length < 2) return 'Name must be at least 2 characters';
+        return '';
+    },
+    email: (value) => {
+        if (!value.trim()) return 'Email is required';
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value)) return 'Please enter a valid email address';
+        return '';
+    },
+    message: (value) => {
+        if (!value.trim()) return 'Message is required';
+        if (value.trim().length < 10) return 'Message must be at least 10 characters';
+        return '';
+    }
+};
+
+function showError(input, message) {
+    const formGroup = input.parentElement;
+    const errorElement = formGroup.querySelector('.error-message');
+
+    input.classList.add('error');
+    input.classList.remove('success');
+    errorElement.textContent = message;
+    errorElement.classList.add('show');
+}
+
+function showSuccess(input) {
+    const formGroup = input.parentElement;
+    const errorElement = formGroup.querySelector('.error-message');
+
+    input.classList.remove('error');
+    input.classList.add('success');
+    errorElement.textContent = '';
+    errorElement.classList.remove('show');
+}
+
+function validateField(input) {
+    const value = input.value;
+    const fieldName = input.name;
+    const error = validators[fieldName](value);
+
+    if (error) {
+        showError(input, error);
+        return false;
+    } else {
+        showSuccess(input);
+        return true;
+    }
+}
+
+// Real-time validation
+[nameInput, emailInput, messageInput].forEach(input => {
+    input.addEventListener('blur', () => validateField(input));
+    input.addEventListener('input', () => {
+        if (input.classList.contains('error')) {
+            validateField(input);
+        }
+    });
+});
+
+// Form submission handler
+contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // Get form data
-    const formData = new FormData(contactForm);
+    // Validate all fields
+    const isNameValid = validateField(nameInput);
+    const isEmailValid = validateField(emailInput);
+    const isMessageValid = validateField(messageInput);
 
-    // Show success message (you can customize this)
-    alert('Thank you for your message! I\'ll get back to you soon.');
+    if (!isNameValid || !isEmailValid || !isMessageValid) {
+        showToast('Validation Error', 'Please fix the errors in the form', 'error');
+        return;
+    }
+
+    // Show loading state
+    const submitButton = contactForm.querySelector('.submit-button');
+    const buttonText = submitButton.querySelector('.button-text');
+    submitButton.disabled = true;
+    submitButton.classList.add('loading');
+    buttonText.textContent = 'Sending...';
+
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1500));
+
+    // Show success message
+    showToast('Message Sent!', 'Thank you for your message. I\'ll get back to you soon.', 'success');
 
     // Reset form
     contactForm.reset();
+    [nameInput, emailInput, messageInput].forEach(input => {
+        input.classList.remove('success', 'error');
+    });
+
+    // Reset button
+    submitButton.disabled = false;
+    submitButton.classList.remove('loading');
+    buttonText.textContent = 'Send Message';
 });
 
 // Intersection Observer for fade-in animations
@@ -138,45 +334,69 @@ const projectData = {
     }
 };
 
-// Planet click handlers
+// ==================== GALAXY KEYBOARD NAVIGATION ====================
 const planets = document.querySelectorAll('.planet');
 const modal = document.getElementById('project-modal');
 const modalClose = document.querySelector('.modal-close');
 
+// Make planets keyboard accessible
+planets.forEach((planet, index) => {
+    planet.setAttribute('tabindex', '0');
+    planet.setAttribute('role', 'button');
+    planet.setAttribute('aria-label', `View project ${index + 1}`);
+});
+
+function openProjectModal(planet) {
+    const projectId = planet.getAttribute('data-project');
+    const project = projectData[projectId];
+
+    // Remove active class from all planets
+    planets.forEach(p => p.classList.remove('active'));
+
+    // Add active class to clicked planet
+    planet.classList.add('active');
+
+    // Populate modal with project data
+    document.getElementById('modal-title').textContent = project.title;
+    document.getElementById('modal-type').textContent = project.type;
+    document.getElementById('modal-description').textContent = project.description;
+
+    const tagsContainer = document.getElementById('modal-tags');
+    tagsContainer.innerHTML = '';
+    project.tags.forEach(tag => {
+        const tagElement = document.createElement('span');
+        tagElement.className = 'tag';
+        tagElement.textContent = tag;
+        tagsContainer.appendChild(tagElement);
+    });
+
+    // Show modal
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    modalClose.focus(); // Focus close button for accessibility
+}
+
+// Planet click handlers
 planets.forEach(planet => {
     planet.addEventListener('click', (e) => {
         e.stopPropagation();
-        const projectId = planet.getAttribute('data-project');
-        const project = projectData[projectId];
+        openProjectModal(planet);
+    });
 
-        // Remove active class from all planets
-        planets.forEach(p => p.classList.remove('active'));
-
-        // Add active class to clicked planet
-        planet.classList.add('active');
-
-        // Populate modal with project data
-        document.getElementById('modal-title').textContent = project.title;
-        document.getElementById('modal-type').textContent = project.type;
-        document.getElementById('modal-description').textContent = project.description;
-
-        const tagsContainer = document.getElementById('modal-tags');
-        tagsContainer.innerHTML = '';
-        project.tags.forEach(tag => {
-            const tagElement = document.createElement('span');
-            tagElement.className = 'tag';
-            tagElement.textContent = tag;
-            tagsContainer.appendChild(tagElement);
-        });
-
-        // Show modal
-        modal.classList.add('active');
+    // Keyboard support
+    planet.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openProjectModal(planet);
+        }
     });
 });
 
 // Close modal
 function closeModal() {
     modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+
     // Remove active class from all planets after a short delay
     setTimeout(() => {
         planets.forEach(p => p.classList.remove('active'));
@@ -184,6 +404,7 @@ function closeModal() {
 }
 
 modalClose.addEventListener('click', closeModal);
+modalClose.setAttribute('aria-label', 'Close modal');
 
 // Close modal when clicking outside
 modal.addEventListener('click', (e) => {
@@ -198,3 +419,8 @@ document.addEventListener('keydown', (e) => {
         closeModal();
     }
 });
+
+// Initialize modal aria-hidden
+modal.setAttribute('aria-hidden', 'true');
+modal.setAttribute('role', 'dialog');
+modal.setAttribute('aria-modal', 'true');
